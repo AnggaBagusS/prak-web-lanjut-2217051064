@@ -1,62 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create User</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .form-container {
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .form-box {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-        }
-        .btn-submit {
-            background-color: #6366F1;
-            border: none;
-        }
-        .btn-submit:hover {
-            background-color: #4f46e5;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container form-container">
-        <div class="form-box">
-            <h2 class="text-center mb-4">Create User</h2>
-            <form action="{{ route('user.store') }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="nama" class="form-label">Nama</label>
-                    <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama" required>
-                </div>
-                <div class="mb-3">
-                    <label for="npm" class="form-label">NPM</label>
-                    <input type="text" class="form-control" id="npm" name="npm" placeholder="NPM" required>
-                </div>
-                <div class="mb-3">
-                    <label for="kelas" class="form-label">Kelas</label>
-                    <input type="text" class="form-control" id="kelas" name="kelas" placeholder="Kelas" required>
-                </div>
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-primary btn-submit">Submit</button>
-                </div>
-            </form>
-        </div>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Create User</h2>
+
+        <!-- Form Start -->
+        <form action="{{ route('user.store') }}" method="POST" class="space-y-4">
+            @csrf
+            
+            <!-- Nama Field -->
+            <div>
+                <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
+                <input type="text" id="nama" name="nama" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Masukkan nama">
+                @foreach ($errors->get('nama') as $msg)
+                    <p class="text-red-500">{{$msg}}</p>
+                @endforeach
+            </div>
+            
+            <!-- NPM Field -->
+            <div>
+                <label for="npm" class="block text-sm font-medium text-gray-700">NPM</label>
+                <input type="text" id="npm" name="npm" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Masukkan NPM">
+                @foreach ($errors->get('npm') as $msg)
+                    <p class="text-red-500">{{$msg}}</p>
+                @endforeach
+            </div>
+            
+            <!-- Kelas Field -->
+            <div>
+                <label for="id_kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
+                <select name="kelas_id" id="kelas_id" required>
+                    @foreach ($kelas as $kelasItem)
+                    <option value="{{$kelasItem->id}}">{{$kelasItem->nama_kelas}}</option>
+                    @endforeach
+                </select>
+                @foreach ($errors->get('kelas_id') as $msg)
+                    <p class="text-red-500">{{$msg}}</p>
+                @endforeach
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="flex justify-center">
+                <button type="submit" class="w-full py-2 px-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">Submit</button>
+            </div>
+        </form>
+        <!-- Form End -->
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
