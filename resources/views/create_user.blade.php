@@ -1,58 +1,51 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create User</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+@extends('layouts.app')
 
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Create User</h2>
+@section('content')
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="bg-white p-5 rounded-lg shadow-lg" style="max-width: 400px; width: 100%;">
+        <h2 class="text-center mb-4">Create User</h2>
 
         <!-- Form Start -->
-        <form action="{{ route('user.store') }}" method="POST" class="space-y-4">
+        <form action="{{ route('user.store') }}" method="POST">
             @csrf
-            
+
             <!-- Nama Field -->
-            <div>
-                <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
-                <input type="text" id="nama" name="nama" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Masukkan nama">
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama</label>
+                <input type="text" id="nama" name="nama" class="form-control" placeholder="Masukkan nama" value="{{ old('nama') }}">
                 @foreach ($errors->get('nama') as $msg)
-                    <p class="text-red-500">{{$msg}}</p>
+                    <p class="text-danger small">{{$msg}}</p>
                 @endforeach
             </div>
-            
+
             <!-- NPM Field -->
-            <div>
-                <label for="npm" class="block text-sm font-medium text-gray-700">NPM</label>
-                <input type="text" id="npm" name="npm" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Masukkan NPM">
+            <div class="mb-3">
+                <label for="npm" class="form-label">NPM</label>
+                <input type="text" id="npm" name="npm" class="form-control" placeholder="Masukkan NPM" value="{{ old('npm') }}">
                 @foreach ($errors->get('npm') as $msg)
-                    <p class="text-red-500">{{$msg}}</p>
+                    <p class="text-danger small">{{$msg}}</p>
                 @endforeach
             </div>
-            
+
             <!-- Kelas Field -->
-            <div>
-                <label for="id_kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
-                <select name="kelas_id" id="kelas_id" required>
+            <div class="mb-4">
+                <label for="kelas_id" class="form-label">Kelas</label>
+                <select name="kelas_id" id="kelas_id" class="form-select">
                     @foreach ($kelas as $kelasItem)
-                    <option value="{{$kelasItem->id}}">{{$kelasItem->nama_kelas}}</option>
+                        <option value="{{$kelasItem->id}}" {{ old('kelas_id') == $kelasItem->id ? 'selected' : '' }}>{{$kelasItem->nama_kelas}}</option>
                     @endforeach
                 </select>
                 @foreach ($errors->get('kelas_id') as $msg)
-                    <p class="text-red-500">{{$msg}}</p>
+                    <p class="text-danger small">{{$msg}}</p>
                 @endforeach
             </div>
-            
+
             <!-- Submit Button -->
-            <div class="flex justify-center">
-                <button type="submit" class="w-full py-2 px-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">Submit</button>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
         <!-- Form End -->
     </div>
-
-</body>
-</html>
+</div>
+@endsection
