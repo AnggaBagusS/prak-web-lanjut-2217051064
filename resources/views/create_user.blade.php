@@ -6,7 +6,7 @@
         <h2 class="text-center mb-4">Create User</h2>
 
         <!-- Form Start -->
-        <form action="{{ route('user.store') }}" method="POST">
+        <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <!-- Nama Field -->
@@ -38,6 +38,12 @@
                 @foreach ($errors->get('kelas_id') as $msg)
                     <p class="text-danger small">{{$msg}}</p>
                 @endforeach
+            </div>
+
+            <!-- Foto Field -->
+            <div class="mb-3">
+                <label for="foto" class="form-label">Foto</label>
+                <input type="file" id="foto" name="foto">
             </div>
 
             <!-- Submit Button -->
