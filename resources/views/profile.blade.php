@@ -13,7 +13,7 @@
         <!-- Display Foto if available -->
         @if ($user->foto)
             <div class="mb-4 flex justify-center">
-                <img src="{{ asset($user->foto) }}" alt="Foto Profil" class="w-32 h-32 rounded-full">
+                <img src="{{ asset('upload/img/'. $user->foto) }}" alt="Foto Profil" class="w-32 h-32 rounded-full">
             </div>
         @else
             <div class="mb-4 flex justify-center">

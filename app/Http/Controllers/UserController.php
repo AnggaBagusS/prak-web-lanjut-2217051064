@@ -5,38 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\UserModel;
-use App\Http\Requests\UserRequest;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
     public $userModel;
     public $kelasModel;
-    
-    public function __construct() {
+
+
+    public function __construct()
+    {
         $this->userModel = new UserModel();
         $this->kelasModel = new Kelas();
     }
 
-    public function index() {
-        $data = [
-            'title' => 'List User',
-            'users' => $this->userModel->getUser(),
-        ];
+    public function index()
+    {
+    $data = [
+        'title' => 'List User',
+        'users' => $this->userModel->getUser(),
+    ];
 
-        return view('list_user', $data);
+    return view('list_user', $data);
     }
 
-    public function profile($nama = "", $kelas = "", $npm = "") {
-        $data = [
-            'nama' => $nama,
-            'kelas' => $kelas,
-            'npm' => $npm
-        ];
 
-        return view('profile', $data);
-    }
-
-    public function create() {
+    public function create(){
         $kelasModel = new Kelas();
+
+    // Mengambil data kelas menggunakan method getKelas
         $kelas = $kelasModel->getKelas();
 
         $data = [
@@ -44,40 +40,40 @@ class UserController extends Controller {
             'kelas' => $kelas,
         ];
 
-        return view('create_user', $data);
+    return view('create_user', $data);
     }
 
-    public function store(Request $request) {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'npm' => 'required|string|max:255',
-            'kelas_id' => 'required|integer',
-            'foto' => 'nullable|image|mimes:jpeg, png, jpg, gif, svg|max:2048',
-        ]);
+    public function store(Request $request)
+    {
 
-        if($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $fotoName = $foto->hashName();
-            $fotoPath = $foto->move(('upload/img'), $fotoName);
-            
-            // Ensure the path uses forward slashes
-            $fotoPath = str_replace('\\', '/', $fotoPath);
-        } else {
-            $fotoPath = null;
-        }
+    $request->validate([
+        'nama' => 'required|string|max:255',
+        'npm' => 'required|string|max:255',
+        'kelas_id' => 'required|integer',
+        'foto' =>
+        'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
-        $this->userModel->create([
-            'nama' => $request->input('nama'),
-            'npm' => $request->input('npm'),
-            'kelas_id' => $request->input('kelas_id'),
-            'foto' => $fotoPath,
-        ]);
+    if ($request->hasFile('foto')) {
 
-        return redirect()->to('/user')->with('success', 'User berhasil ditambahkan');
+        $foto = $request->file('foto');
+        $filename = time(). '_' . $foto->getClientOriginalName();
+        $fotoPath = $foto->move(public_path('upload/img'), $filename);
+    } else {
+        $fotoPath = null;
     }
 
-    public function show($id) {
-        $user = $this->userModel->getUser($id);
+    $this->userModel->create([
+        'nama' => $request->input('nama'),
+        'npm' => $request->input('npm'),
+        'kelas_id' => $request->input('kelas_id'),
+        'foto' => $filename,    
+    ]);
+    return redirect()->to('/user')->with('success', 'User berhasil ditambahkan');
+    }
+
+    public function show($id){
+        $user = $this-> userModel-> getUser($id);
 
         $data = [
             'title' => 'Profile',
@@ -85,5 +81,38 @@ class UserController extends Controller {
         ];
 
         return view('profile', $data);
+    }
+
+    public function edit($id){
+        $user = UserModel::findOrFail($id);
+        $kelasModel = new Kelas();
+        $kelas = $kelasModel -> getKelas();
+        $title = 'Edit.user';
+        return view('edit_user', compact('user', 'kelas', 'title'));
+    }
+
+    public function update(Request $request, $id){
+        $user = UserModel::findOrFail($id);
+
+        $user->nama=$request ->nama;
+        $user->npm=$request ->npm;
+        $user->kelas_id=$request ->kelas_id;
+
+        if($request->hasFile('foto')){
+            $filename=time() . '_' . $request ->foto->extension();
+            $request ->foto->move(public_path('upload/img'), $filename);
+            $user->foto = $filename;
+        }
+
+        $user->save();
+
+        return redirect()->to('/user')->with('success', 'User Update Successfully');
+    }
+
+    public function destroy($id){
+        $user=UserModel::findOrFail($id);
+        $user->delete();
+
+        return redirect()->to('user/')->with('success', 'User has been delete successfully');
     }
 }
