@@ -24,6 +24,8 @@
         <p class="text-lg text-gray-700 mb-4">Nama: <span class="font-medium text-gray-900">{{ $user->nama }}</span></p>
         <p class="text-lg text-gray-700 mb-4">NPM: <span class="font-medium text-gray-900">{{ $user->npm }}</span></p>
         <p class="text-lg text-gray-700">Kelas: <span class="font-medium text-gray-900">{{ $user->nama_kelas ?? 'Kelas tidak ditemukan' }}</span></p>
+        <p class="text-lg text-gray-700 mb-4">JURUSAN: <span class="font-medium text-gray-900">{{ $user->jurusan }}</span></p>
+        <p class="text-lg text-gray-700 mb-4">SEMESTER: <span class="font-medium text-gray-900">{{ $user->semester }}</span></p>
     </div>
 </body>
 </html>

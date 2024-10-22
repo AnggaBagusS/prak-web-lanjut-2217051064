@@ -50,6 +50,8 @@ class UserController extends Controller
         'nama' => 'required|string|max:255',
         'npm' => 'required|string|max:255',
         'kelas_id' => 'required|integer',
+        'jurusan' => 'required|string|max:255',
+        'semester' => 'required|integer|max:255',
         'foto' =>
         'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
@@ -67,7 +69,9 @@ class UserController extends Controller
         'nama' => $request->input('nama'),
         'npm' => $request->input('npm'),
         'kelas_id' => $request->input('kelas_id'),
-        'foto' => $filename,    
+        'jurusan' => $request->input('jurusan'),    
+        'semester' => $request->input('semester'),    
+        'foto' => $filename,
     ]);
     return redirect()->to('/user')->with('success', 'User berhasil ditambahkan');
     }
@@ -97,12 +101,15 @@ class UserController extends Controller
         $user->nama=$request ->nama;
         $user->npm=$request ->npm;
         $user->kelas_id=$request ->kelas_id;
+        $user->jurusan=$request ->jurusan;
+        $user->semester=$request ->semester;
 
         if($request->hasFile('foto')){
             $filename=time() . '_' . $request ->foto->extension();
             $request ->foto->move(public_path('upload/img'), $filename);
             $user->foto = $filename;
         }
+
 
         $user->save();
 

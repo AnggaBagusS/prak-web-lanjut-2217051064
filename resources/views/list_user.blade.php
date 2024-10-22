@@ -3,41 +3,31 @@
     <a href="{{ route('user.create') }}" class="btn btn-primary mb-3">Tambah Pengguna Baru</a>
 
     <h1 style="font-size: 2rem; margin-bottom: 20px;">Daftar User</h1>
-    
-    <table style="width: 100%; border-collapse: collapse;">
-        <thead>
-            <tr style="background-color: #222; color: white; text-align: left;">
-                <th style="padding: 10px;">ID</th>
-                <th style="padding: 10px;">Nama</th>
-                <th style="padding: 10px;">NPM</th>
-                <th style="padding: 10px;">Kelas</th>
-                <th style="padding: 10px;">Foto</th>
-                <th style="padding: 10px;">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($users as $user)
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 10px;">{{ $user['id'] }}</td>
-                    <td style="padding: 10px;">{{ $user['nama'] }}</td>
-                    <td style="padding: 10px;">{{ $user['npm'] }}</td>
-                    <td style="padding: 10px;">{{ $user['nama_kelas'] }}</td>
-                    <td style="padding: 10px;">
-                        <img src="{{asset('upload/img/'. $user->foto)}}" alt="Foto User" width="100">
-                    </td>
-                    <td style="padding: 10px;">
+
+    <div class="row">
+        @foreach ($users as $user)
+            <div class="col-md-4 mb-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{asset('upload/img/'. $user->foto)}}" alt="Foto User" style="height: 180px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $user['nama'] }}</h5>
+                        <p class="card-text">
+                            NPM: {{ $user['npm'] }}<br>
+                            Kelas: {{ $user['nama_kelas'] }}<br>
+                            Jurusan: {{ $user['jurusan'] }}<br>
+                            Semester: {{ $user['semester'] }}
+                        </p>
                         <a href="{{ route('user.show', $user->id) }}" class="btn btn-primary btn-sm">View</a>
                         <a href="{{route('user.edit', $user['id']) }}" class="btn btn-warning btn-sm">Edit</a>
                         <form action="{{route('user.destroy', $user['id']) }}" method="POST" style="display: inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type = "submit" class = "btn btn-danger btn-sm" 
-                            onclick= "return confirm('Apakah anda yakin ingin menghpus user ini?')">Delete</button> 
+                            <button type="submit" class="btn btn-danger btn-sm" 
+                            onclick="return confirm('Apakah anda yakin ingin menghapus user ini?')">Delete</button>
                         </form>
-
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
 @endsection

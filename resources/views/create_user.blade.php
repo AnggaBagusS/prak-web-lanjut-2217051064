@@ -46,6 +46,24 @@
                 <input type="file" id="foto" name="foto">
             </div>
 
+            <!-- Jurusan Field -->
+            <div class="mb-3">
+                <label for="jurusan" class="form-label">Jurusan</label>
+                <input type="text" id="jurusan" name="jurusan" class="form-control" placeholder="Masukkan Jurusan" value="{{ old('jurusan') }}">
+                @foreach ($errors->get('jurusan') as $msg)
+                    <p class="text-danger small">{{$msg}}</p>
+                @endforeach
+            </div>
+
+            <!-- Semester Field -->
+            <div class="mb-3">
+                <label for="semester" class="form-label">Semester</label>
+                <input type="text" id="semester" name="semester" class="form-control" placeholder="Masukkan Semester" value="{{ old('semester') }}">
+                @foreach ($errors->get('semester') as $msg)
+                    <p class="text-danger small">{{$msg}}</p>
+                @endforeach
+            </div>
+
             <!-- Submit Button -->
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">Submit</button>
